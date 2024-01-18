@@ -129,35 +129,3 @@ done
 git remote rename $origin old-$origin
 git remote rename $neworigin $origin
 
-
-
-
-exit 0
-
-
-
-
-
-while read branch
-do
-    upstream=$(git rev-parse --abbrev-ref $branch@{upstream} 2>/dev/null)
-    if [[ $? != 0 ]]
-    then
-        continue
-    fi
-
-    rname="${upstream#*/}"
-
-    echo "$branch --tracks> $upstream ($rname)"
-
-    # if git fetch $neworigin $rname 
-    # then
-    #     git branch -u $neworigin/$rname $branch
-    # fi 
-    echo "Push $branch -> $repo/$rname"
-    git push -u $neworigin $branch:$rname
-    
-
-
-done < <(git for-each-ref --format='%(refname:short)' refs/heads)
-
